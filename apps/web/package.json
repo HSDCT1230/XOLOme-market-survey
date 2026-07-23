@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/noto-sans-sc": "^5.3.0",
     "@xolome/survey-core": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

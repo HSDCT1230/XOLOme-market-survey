@@ -10,6 +10,12 @@ import {
 
 const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v21_h5';
 
+/** Resolve API path relative to current page (works under / or /survey/) */
+function apiHref(pathWithQuery) {
+  const rel = String(pathWithQuery).replace(/^\//, '');
+  return new URL(rel, window.location.href).toString();
+}
+
 function buildPages(questions) {
   const pages = [];
   let i = 0;
@@ -52,7 +58,7 @@ function AdminPanel() {
       format,
       includeContact: includeContact ? '1' : '0',
     });
-    return `/api/export?${q.toString()}`;
+    return apiHref(`api/export?${q.toString()}`);
   };
 
   const download = async (format) => {
@@ -280,7 +286,7 @@ export default function App() {
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/submit', {
+      const res = await fetch(apiHref('api/submit'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers: cleaned }),

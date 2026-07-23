@@ -4,59 +4,57 @@
 
 仓库：https://github.com/HSDCT1230/XOLOme-market-survey
 
-## 结构
+## 为什么国内打不开 workers.dev？
 
-```
-schema/v21.json       # 题目定义（改题升 version）
-packages/core/        # 跳题 / flatten / 提交清理
-apps/web/             # Vite + React H5
-apps/api/             # 本地 Node + SQLite（可选）
-workers/              # Cloudflare Workers + D1（推荐线上）
-migrations/           # D1 schema
-docs/PARITY.md        # 与小程序 v21 对拍清单
-```
+本机探测：`api.xolome.com`（`120.26.0.177`）可访问，但 `*.workers.dev` / `*.pages.dev` **经常超时**（运营商对 Cloudflare 免费域拦截）。  
+**服务本身是正常的**（海外/代理可打开）；国内投放请用下面「反代」链接。
 
-## Cloudflare 线上
+## 国内推荐投放链接（需在服务器加一段 nginx）
 
-- 问卷：https://xolome-market-survey.xueyingwang1230.workers.dev/
-- 导出：https://xolome-market-survey.xueyingwang1230.workers.dev/admin  
-  （密钥已用 `wrangler secret put SURVEY_ADMIN_TOKEN` 配置，勿写入仓库）
-- 健康检查：`/api/health`
+在 `api.xolome.com` 的 nginx 加入 [`deploy/nginx-survey-china.conf`](deploy/nginx-survey-china.conf) 后：
 
-## 本地开发（双进程）
+- 问卷：https://api.xolome.com/survey/
+- 导出：https://api.xolome.com/survey/admin
+
+海外直连（备用）：https://xolome-market-survey.xueyingwang1230.workers.dev/
+
+## 字体规范
+
+| 用途 | 中文 | 英文 | weight |
+|------|------|------|--------|
+| 主标题 | 思源黑体 CN → Noto Sans SC Bold | Helvetica Neue Bold | 700 |
+| 题干 / 主按钮 | Bold | Bold | 700 |
+| 选中项 / 辅助强调 | Medium（系统合成或 500） | Medium | 500 |
+| 正文 / 选项 | Normal | Regular | 400 |
+| 品牌英文 XOLOME | — | Helvetica Neue Bold | 700 |
+
+字体已 **本地打包**（简体子集 Normal+Bold，兼顾国内网络与手机流量）。
+
+## 手机适配
+
+- `viewport-fit=cover` + safe-area（刘海 / Home 条）
+- 触控热区 ≥ 44px；`touch-action: manipulation`
+- 输入框 16px 防止 iOS 聚焦放大
+- `clamp()` 字号；窄屏（≤360）优化
+- 相对路径 API，支持根路径与 `/survey/` 反代
+
+## Cloudflare（已部署）
+
+- Worker：https://xolome-market-survey.xueyingwang1230.workers.dev/
+- D1：`xolome-survey`
+- 导出密钥：`wrangler secret put SURVEY_ADMIN_TOKEN`
+
+## 本地开发
 
 ```bash
 npm install
 npm run smoke
-npm run dev:api   # :8787
-npm run dev:web   # :5173 代理 /api
+npm run dev:api
+npm run dev:web
 ```
 
-- 问卷 http://127.0.0.1:5173/
-- 导出 http://127.0.0.1:5173/admin
-- 默认导出密钥 `xolome-dev-export-token`（务必在生产改掉）
+## 再部署
 
-## Cloudflare 部署（推荐）
-
-1. 登录：`npx wrangler login`
-2. 创建 D1：`npm run cf:d1:create`，把返回的 `database_id` 写入 [`wrangler.jsonc`](wrangler.jsonc)
-3. 应用迁移：`npm run cf:d1:migrate`
-4. 设置密钥（推荐用 secret，勿提交仓库）：
-   ```bash
-   npx wrangler secret put SURVEY_ADMIN_TOKEN
-   ```
-5. 部署：`npm run cf:deploy`
-6. 投放链接：Workers 给出的 `*.workers.dev` 或绑定自定义域；导出页 `/admin`
-
-本地模拟 CF：`npm run cf:dev`
-
-## 改题
-
-1. 改 `schema/v21.json` 或新建 `v22.json` 并升 `version` / `draftKey`
-2. 若 flatten 字段变了，同步 `packages/core`
-3. 重新 `npm run cf:deploy`
-
-## 与小程序
-
-- 小程序仓库：https://github.com/HSDCT1230/XOLOme-miniapp — 问卷逻辑暂冻结
-- 云库历史答卷不自动合并；需要时从微信云开发单独导出
+```bash
+npm run cf:deploy
+```
