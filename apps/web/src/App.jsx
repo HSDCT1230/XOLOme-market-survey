@@ -8,7 +8,7 @@ import {
   getVisibleQuestions,
 } from '@xolome/survey-core';
 
-const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v21_h5';
+const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v22_h5';
 
 /** Resolve API path relative to current page (works under / or /survey/) */
 function apiHref(pathWithQuery) {
@@ -337,7 +337,7 @@ export default function App() {
       <header className="header">
         <div className="brand">XOLOme</div>
         <h1 className="title">{schema.title}</h1>
-        <p className="subtitle">{schema.subtitle}</p>
+        {schema.subtitle ? <p className="subtitle">{schema.subtitle}</p> : null}
         <div className="progress-wrap">
           <div className="progress-meta">
             <span>

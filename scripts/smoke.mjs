@@ -10,7 +10,7 @@ import {
 } from '../packages/core/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v21.json'), 'utf8'));
+const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v22.json'), 'utf8'));
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);

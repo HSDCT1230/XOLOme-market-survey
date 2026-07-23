@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import schema from '../schema/v21.json';
+import schema from '../schema/v22.json';
 import {
   FLAT_EXPORT_COLUMNS,
   cellValue,
