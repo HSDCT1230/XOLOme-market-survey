@@ -71,7 +71,7 @@ assert(cleaned['9'][0] === 'none_attractive', 'keep Q9');
 
 const flat = flattenAnswers(cleaned);
 assert(flat.digitalBudget === '3000_6000', 'budget tier');
-assert(flat.ipMerchPayCap === null, 'ipMerchPayCap null');
+assert(!Object.prototype.hasOwnProperty.call(flat, 'ipMerchPayCap'), 'no deprecated ipMerchPayCap in flat');
 
 const csv = buildExportCsv(
   [
@@ -79,7 +79,7 @@ const csv = buildExportCsv(
       id: 't1',
       version: 'v23',
       created_at: '2026-07-23T00:00:00.000Z',
-      flat: JSON.stringify(flat),
+      flat: JSON.stringify({ ...flat, ipMerchPayCap: 'legacy_should_be_ignored' }),
     },
   ],
   schema,
@@ -88,5 +88,8 @@ const csv = buildExportCsv(
 assert(csv.charCodeAt(0) === 0xfeff, 'csv utf8 bom');
 assert(csv.includes('答卷ID'), 'csv zh header');
 assert(csv.includes('月度数码兴趣预算'), 'csv budget zh');
+assert(!csv.includes('已弃用'), 'csv has no deprecated header label');
+assert(!csv.includes('ipMerchPayCap'), 'csv has no ipMerchPayCap column');
+assert(!csv.includes('IP周边付费上限'), 'csv has no removed IP merch column');
 
 console.log('smoke OK — v23 visibility / submit / flatten / csv');

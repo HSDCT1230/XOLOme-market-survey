@@ -67,7 +67,7 @@ export function applyRadioAnswer(schema, answers, qid, value) {
     delete next['11b'];
     delete next['11c'];
     delete next['11d'];
-    delete next['11e'];
+    delete next['11e']; // legacy removed question (old IP merch pay-cap)
   }
   if (key === '14' && value === 'pay_499') {
     delete next['14a'];
@@ -143,7 +143,7 @@ export function getSubmitAnswers(schema, answers) {
     delete next['11b'];
     delete next['11c'];
     delete next['11d'];
-    delete next['11e'];
+    delete next['11e']; // legacy removed question (old IP merch pay-cap)
   }
   if (answerOf(next, '14') === 'pay_499') {
     delete next['14a'];
@@ -189,7 +189,6 @@ export function flattenAnswers(data) {
     addonPriceAccept: pick(raw, '11b') || null,
     wishIp: pick(raw, '11c') || '',
     ipShellPremium: pick(raw, '11d') || null,
-    ipMerchPayCap: null,
     albumUse: pick(raw, '11ha') || null,
     albumConcern: pick(raw, '11hb') || null,
     aiUse: pick(raw, '11ai') || null,
@@ -228,6 +227,7 @@ export function validateRequired(schema, answers) {
 }
 
 export const FLAT_EXPORT_COLUMNS = [
+  // Active v23 analysis columns only (no removed/legacy flat keys).
   'age',
   'gender',
   'digitalBudget',
@@ -244,7 +244,6 @@ export const FLAT_EXPORT_COLUMNS = [
   'addonPriceAccept',
   'wishIp',
   'ipShellPremium',
-  'ipMerchPayCap',
   'albumUse',
   'albumConcern',
   'aiUse',
@@ -283,7 +282,6 @@ export const FLAT_FIELD_ZH = {
   addonPriceAccept: '外壳或数字包可接受花费',
   wishIp: '最想要的IP角色',
   ipShellPremium: '限定外壳加价意愿',
-  ipMerchPayCap: 'IP周边付费上限_已弃用',
   albumUse: '全息相册用途',
   albumConcern: '全息相册最在意',
   aiUse: 'AI伙伴用途',
@@ -407,7 +405,7 @@ export function buildExportCsv(rows, schema, { includeContact = false, headers =
       ...flatKeys.map((key) => {
         const raw = flat[key];
         const qid = FLAT_FIELD_QID[key];
-        if (!qid || key === 'ipMerchPayCap') return cellValue(raw);
+        if (!qid) return cellValue(raw);
         const q = (schema.questions || []).find((x) => String(x.id) === String(qid));
         if (q && q.type === 'text') return cellValue(raw);
         if (q && (q.type === 'radio' || q.type === 'checkbox')) {
