@@ -9,11 +9,25 @@ import {
 } from '@xolome/survey-core';
 
 const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v1.0_h5';
+const LOGO_SRC = `${import.meta.env.BASE_URL}logo-xolome.png`;
 
 /** Resolve API path relative to current page (works under / or /survey/) */
 function apiHref(pathWithQuery) {
   const rel = String(pathWithQuery).replace(/^\//, '');
   return new URL(rel, window.location.href).toString();
+}
+
+function BrandLogo({ className }) {
+  return (
+    <img
+      className={className || 'brand-mark'}
+      src={LOGO_SRC}
+      alt="XOLOme"
+      width={220}
+      height={72}
+      decoding="async"
+    />
+  );
 }
 
 function buildPages(questions) {
@@ -97,11 +111,11 @@ function AdminPanel() {
   return (
     <div className="app">
       <header className="header">
-        <div className="brand">XOLOme Survey</div>
+        <BrandLogo />
         <h1 className="title">管理后台</h1>
         <p className="subtitle">输入管理密钥导出答卷。CSV 默认中文表头；JSON 保留英文字段。</p>
       </header>
-      <div className="card admin">
+      <div className="admin-panel">
         <label htmlFor="token">管理密钥</label>
         <input
           id="token"
@@ -312,16 +326,18 @@ export default function App() {
   if (done) {
     return (
       <div className="app">
-        <div className="success card">
-          <div className="brand">XOLOme</div>
+        <div className="success">
+          <BrandLogo />
+          <div className="success-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+          </div>
           <h2>感谢参与！</h2>
           <p>
             问卷已提交成功！感谢您宝贵的意见！
             {submitId ? (
-              <>
-                <br />
-                答卷编号：{submitId.slice(0, 8)}…
-              </>
+              <span className="success-id">答卷编号：{submitId.slice(0, 8)}…</span>
             ) : null}
           </p>
         </div>
@@ -336,7 +352,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <div className="brand">XOLOme</div>
+        <BrandLogo />
         <h1 className="title">{schema.title}</h1>
         {schema.subtitle ? <p className="subtitle">{schema.subtitle}</p> : null}
         <div className="progress-wrap">
@@ -352,7 +368,7 @@ export default function App() {
         </div>
       </header>
 
-      <div className="card">
+      <div className="panel" key={step}>
         {pageQuestions.map((q, i) => (
           <QuestionBlock
             key={q.id}
