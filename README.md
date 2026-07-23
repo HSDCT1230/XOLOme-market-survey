@@ -9,9 +9,11 @@
 本机探测：`api.xolome.com`（`120.26.0.177`）可访问，但 `*.workers.dev` / `*.pages.dev` **经常超时**（运营商对 Cloudflare 免费域拦截）。  
 **服务本身是正常的**（海外/代理可打开）；国内投放请用下面「反代」链接。
 
-## 国内推荐投放链接（需在服务器加一段 nginx）
+## 国内推荐投放链接（反代）
 
-在 `api.xolome.com` 的 nginx 加入 [`deploy/nginx-survey-china.conf`](deploy/nginx-survey-china.conf) 后：
+零基础操作说明与一键脚本：[`deploy/README-china-proxy.md`](deploy/README-china-proxy.md)
+
+在 `api.xolome.com`（`120.26.0.177`）nginx 配好后：
 
 - 问卷：https://api.xolome.com/survey/
 - 导出：https://api.xolome.com/survey/admin
