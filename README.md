@@ -38,6 +38,10 @@
 - `clamp()` 字号；窄屏（≤360）优化
 - 相对路径 API，支持根路径与 `/survey/` 反代
 
+## 问卷版本约定
+
+当前正式投放为 **v1.0**（`schema/v1.0.json`，入库 `version` 同）。正式大改升到 **v2.0**；此前小改用 **v1.1 / v1.2 / v1.3**…。
+
 ## Cloudflare（已部署）
 
 - Worker：https://xolome-market-survey.xueyingwang1230.workers.dev/

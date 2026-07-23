@@ -11,11 +11,13 @@ import {
 } from '../packages/core/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v23.json'), 'utf8'));
+const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v1.0.json'), 'utf8'));
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
 }
+
+assert(schema.version === 'v1.0', 'schema version is v1.0');
 
 let answers = {};
 answers = applyCheckboxToggle(schema, answers, '9', 'none_attractive');
@@ -77,7 +79,7 @@ const csv = buildExportCsv(
   [
     {
       id: 't1',
-      version: 'v23',
+      version: 'v1.0',
       created_at: '2026-07-23T00:00:00.000Z',
       flat: JSON.stringify({ ...flat, ipMerchPayCap: 'legacy_should_be_ignored' }),
     },
@@ -87,9 +89,13 @@ const csv = buildExportCsv(
 );
 assert(csv.charCodeAt(0) === 0xfeff, 'csv utf8 bom');
 assert(csv.includes('答卷ID'), 'csv zh header');
-assert(csv.includes('月度数码兴趣预算'), 'csv budget zh');
+assert(csv.includes('Q3 月度数码兴趣预算'), 'csv budget zh with question number');
+assert(csv.includes('Q1 年龄'), 'csv age zh with question number');
+assert(csv.includes('Q11a 换IP更看重') || csv.includes('Q11a '), 'csv branch 11a has question number');
+// Meta columns stay without Q prefix
+assert(csv.split('\n')[0].includes('答卷ID,问卷版本,提交时间'), 'meta headers without Q');
 assert(!csv.includes('已弃用'), 'csv has no deprecated header label');
 assert(!csv.includes('ipMerchPayCap'), 'csv has no ipMerchPayCap column');
 assert(!csv.includes('IP周边付费上限'), 'csv has no removed IP merch column');
 
-console.log('smoke OK — v23 visibility / submit / flatten / csv');
+console.log('smoke OK — v1.0 visibility / submit / flatten / csv');

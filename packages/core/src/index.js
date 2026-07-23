@@ -227,7 +227,7 @@ export function validateRequired(schema, answers) {
 }
 
 export const FLAT_EXPORT_COLUMNS = [
-  // Active v23 analysis columns only (no removed/legacy flat keys).
+  // Active analysis columns only (no removed/legacy flat keys).
   'age',
   'gender',
   'digitalBudget',
@@ -392,7 +392,13 @@ export function buildExportCsv(rows, schema, { includeContact = false, headers =
   const useZh = headers !== 'en';
   const head = [
     ...(useZh ? metaZh : metaEn),
-    ...flatKeys.map((k) => (useZh ? FLAT_FIELD_ZH[k] || k : k)),
+    ...flatKeys.map((k) => {
+      if (!useZh) return k;
+      const label = FLAT_FIELD_ZH[k] || k;
+      const qid = FLAT_FIELD_QID[k];
+      // 题号与 schema id 一致（含 11a/11b 等分支），元数据列不加题号
+      return qid ? `Q${qid} ${label}` : label;
+    }),
   ];
 
   const lines = [head.map(csvEscape).join(',')];

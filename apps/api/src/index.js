@@ -16,7 +16,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../..');
-const SCHEMA_PATH = path.join(ROOT, 'schema', 'v23.json');
+const SCHEMA_PATH = path.join(ROOT, 'schema', 'v1.0.json');
 const DATA_DIR = path.join(ROOT, 'data');
 const DB_PATH = process.env.SURVEY_DB_PATH || path.join(DATA_DIR, 'survey.sqlite');
 const ADMIN_TOKEN = process.env.SURVEY_ADMIN_TOKEN || 'xolome-dev-export-token';

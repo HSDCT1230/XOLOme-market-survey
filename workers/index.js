@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import schema from '../schema/v23.json';
+import schema from '../schema/v1.0.json';
 import {
   buildExportCsv,
   flattenAnswers,

@@ -8,7 +8,7 @@ import {
   getVisibleQuestions,
 } from '@xolome/survey-core';
 
-const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v23_h5';
+const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v1.0_h5';
 
 /** Resolve API path relative to current page (works under / or /survey/) */
 function apiHref(pathWithQuery) {

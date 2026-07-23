@@ -1,8 +1,8 @@
 {
-  "version": "v23",
+  "version": "v1.0",
   "title": "XOLOme 用户调研",
   "subtitle": "",
-  "draftKey": "_xolome_survey_draft_v23_h5",
+  "draftKey": "_xolome_survey_draft_v1.0_h5",
   "branchAnswerKeys": {
     "ip_partner": [
       "11",

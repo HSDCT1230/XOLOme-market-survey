@@ -2,9 +2,9 @@
 
 对照仓库：`XOLOme-Miniapp/xolome-miniapp/miniprogram/pages/survey/survey.js`（CACHE `v21`）  
 独立系统基线：`XOLOme-Survey/schema/v21.json` + `@xolome/survey-core`  
-**当前线上/开发 schema：`schema/v23.json`（在 v21 对拍通过后迭代；smoke 已切 v23）。**
+**当前线上/开发 schema：`schema/v1.0.json`（产品语义版本；在 v21 对拍通过后迭代；smoke 已切 v1.0）。**
 
-自动化：`npm run smoke`（v23 可见性 / 提交清理 / flatten / 中文 CSV 表头）
+自动化：`npm run smoke`（v1.0 可见性 / 提交清理 / flatten / 中文 CSV 题号表头）
 
 ## 文案 / 选项
 
@@ -28,7 +28,7 @@
 
 ## 数据
 
-- [x] `POST /api/submit` 写入 SQLite/D1，`version` 取当前 schema（现为 v23）
+- [x] `POST /api/submit` 写入 SQLite/D1，`version` 取当前 schema（现为 v1.0）
 - [x] `flat` 字段与云函数 flattenAnswers 对齐（无 couponCode/openid）
 - [x] 导出 CSV 默认中文表头、不含 contact/displayName；`includeContact=1` / `headers=en` 可调
 
