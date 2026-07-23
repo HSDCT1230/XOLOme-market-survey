@@ -1,0 +1,16 @@
+{
+  "name": "xolome-survey",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @xolome/survey-api & npm run dev -w @xolome/survey-web",
+    "dev:api": "npm run dev -w @xolome/survey-api",
+    "dev:web": "npm run dev -w @xolome/survey-web",
+    "build": "npm run build -w @xolome/survey-core && npm run build -w @xolome/survey-web",
+    "start": "npm run start -w @xolome/survey-api"
+  }
+}
