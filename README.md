@@ -1,6 +1,6 @@
 # XOLOme 独立问卷系统（市场调研）
 
-纯调研 H5：**无微信登录、无优惠券、无支付**。微信小程序问卷本阶段不动。
+独立市场调研 H5。微信小程序问卷本阶段不动。
 
 仓库：https://github.com/HSDCT1230/XOLOme-market-survey
 

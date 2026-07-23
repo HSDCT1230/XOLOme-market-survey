@@ -316,7 +316,7 @@ export default function App() {
           <div className="brand">XOLOme</div>
           <h2>感谢参与！</h2>
           <p>
-            问卷已提交成功。本通道为纯调研收集，不提供登录与优惠券。
+            问卷已提交成功！感谢您宝贵的意见！
             {submitId ? (
               <>
                 <br />
