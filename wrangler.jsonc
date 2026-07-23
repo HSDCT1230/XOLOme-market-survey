@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "xolome-market-survey",
+  "main": "workers/index.js",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./apps/web/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "xolome-survey",
+      "database_id": "edbc134c-8226-4e3f-b06c-cc5409a13da6",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "workers_dev": true,
+  "preview_urls": true
+}

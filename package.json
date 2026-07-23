@@ -7,10 +7,17 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @xolome/survey-api & npm run dev -w @xolome/survey-web",
     "dev:api": "npm run dev -w @xolome/survey-api",
     "dev:web": "npm run dev -w @xolome/survey-web",
-    "build": "npm run build -w @xolome/survey-core && npm run build -w @xolome/survey-web",
-    "start": "npm run start -w @xolome/survey-api"
+    "build": "npm run build -w @xolome/survey-web",
+    "start": "npm run start -w @xolome/survey-api",
+    "smoke": "node scripts/smoke.mjs",
+    "cf:dev": "npm run build && wrangler dev",
+    "cf:deploy": "npm run build && wrangler deploy",
+    "cf:d1:create": "wrangler d1 create xolome-survey",
+    "cf:d1:migrate": "wrangler d1 migrations apply xolome-survey --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^4.28.0"
   }
 }

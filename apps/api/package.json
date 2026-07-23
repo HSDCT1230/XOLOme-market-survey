@@ -1,0 +1,14 @@
+{
+  "name": "@xolome/survey-api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --experimental-sqlite src/index.js",
+    "start": "node --experimental-sqlite src/index.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.1",
+    "@xolome/survey-core": "*",
+    "hono": "^4.7.5"
+  }
+}
