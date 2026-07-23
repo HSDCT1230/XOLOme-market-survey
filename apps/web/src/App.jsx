@@ -8,7 +8,7 @@ import {
   getVisibleQuestions,
 } from '@xolome/survey-core';
 
-const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v22_h5';
+const DRAFT_KEY = schema.draftKey || '_xolome_survey_draft_v23_h5';
 
 /** Resolve API path relative to current page (works under / or /survey/) */
 function apiHref(pathWithQuery) {
@@ -23,7 +23,7 @@ function buildPages(questions) {
     const q = questions[i];
     if (q.type === 'text') {
       const next = questions[i + 1];
-      if (next && next.type === 'text' && !next.showIf && !q.showIf) {
+      if (next && next.type === 'text' && !next.showIf && !q.showIf && !next.hideIf && !q.hideIf) {
         pages.push([q, next]);
         i += 2;
       } else {
@@ -57,6 +57,7 @@ function AdminPanel() {
       token,
       format,
       includeContact: includeContact ? '1' : '0',
+      headers: 'zh',
     });
     return apiHref(`api/export?${q.toString()}`);
   };
@@ -79,7 +80,7 @@ function AdminPanel() {
         a.href = URL.createObjectURL(blob);
         a.download = `xolome-survey-${schema.version}.json`;
         a.click();
-        setMsg(`已导出 ${data.count ?? 0} 条 JSON`);
+        setMsg(`已导出 ${data.count ?? 0} 条 JSON（英文字段，适合程序）`);
         return;
       }
       const blob = await res.blob();
@@ -87,7 +88,7 @@ function AdminPanel() {
       a.href = URL.createObjectURL(blob);
       a.download = `xolome-survey-${schema.version}.csv`;
       a.click();
-      setMsg('已开始下载 CSV');
+      setMsg('已开始下载 CSV（中文表头 + 选项已译成中文，可用 Excel 打开）');
     } catch (e) {
       setMsg(e.message || '网络错误');
     }
@@ -97,8 +98,8 @@ function AdminPanel() {
     <div className="app">
       <header className="header">
         <div className="brand">XOLOme Survey</div>
-        <h1 className="title">导出管理</h1>
-        <p className="subtitle">输入管理密钥导出答卷（默认本地密钥见 README）</p>
+        <h1 className="title">管理后台</h1>
+        <p className="subtitle">输入管理密钥导出答卷。CSV 默认中文表头；JSON 保留英文字段。</p>
       </header>
       <div className="card admin">
         <label htmlFor="token">管理密钥</label>
@@ -115,16 +116,16 @@ function AdminPanel() {
             checked={includeContact}
             onChange={(e) => setIncludeContact(e.target.checked)}
           />
-          包含联系方式（displayName / contact）
+          包含称呼 / 联系方式
         </label>
         <div className="admin-actions">
           <button className="btn btn-primary" type="button" onClick={() => download('csv')}>
-            导出 CSV
+            导出 CSV（推荐分析）
           </button>
           <button className="btn btn-secondary" type="button" onClick={() => download('json')}>
             导出 JSON
           </button>
-          <a className="btn btn-secondary" href="/" style={{ textAlign: 'center', textDecoration: 'none' }}>
+          <a className="btn btn-secondary" href="./" style={{ textAlign: 'center', textDecoration: 'none' }}>
             返回问卷
           </a>
         </div>
@@ -181,7 +182,10 @@ function QuestionBlock({ q, answers, onRadio, onCheckbox, onText, spaced }) {
 }
 
 export default function App() {
-  const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+  const isAdmin =
+    typeof window !== 'undefined' &&
+    (window.location.pathname.endsWith('/admin') ||
+      window.location.pathname.endsWith('/admin/'));
 
   const [answers, setAnswers] = useState(() => loadDraft());
   const [step, setStep] = useState(0);
@@ -208,21 +212,18 @@ export default function App() {
     window.setTimeout(() => setToast(''), 1800);
   }, []);
 
-  const stayOnQid = useCallback(
-    (qid, nextAnswers) => {
-      const nextPages = buildPages(getVisibleQuestions(schema, nextAnswers));
-      const idx = nextPages.findIndex((page) =>
-        page.some((q) => String(q.id) === String(qid))
-      );
-      if (idx >= 0) setStep(idx);
-    },
-    []
-  );
+  const stayOnQid = useCallback((qid, nextAnswers) => {
+    const nextPages = buildPages(getVisibleQuestions(schema, nextAnswers));
+    const idx = nextPages.findIndex((page) =>
+      page.some((q) => String(q.id) === String(qid))
+    );
+    if (idx >= 0) setStep(idx);
+  }, []);
 
   const onRadio = (qid, value) => {
     const next = applyRadioAnswer(schema, answers, qid, value);
     setAnswers(next);
-    if (qid === '5' || qid === '10' || qid === '11' || qid === '14') {
+    if (qid === '5' || qid === '10' || qid === '11' || qid === '12' || qid === '14') {
       stayOnQid(qid, next);
     }
   };

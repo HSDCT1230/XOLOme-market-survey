@@ -11,7 +11,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@xolome/survey-core': path.resolve(__dirname, '../../packages/core/src/index.js'),
-      '@schema': path.resolve(__dirname, '../../schema/v22.json'),
+      '@schema': path.resolve(__dirname, '../../schema/v23.json'),
     },
   },
   server: {

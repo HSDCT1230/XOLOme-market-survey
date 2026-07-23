@@ -4,13 +4,14 @@ import { fileURLToPath } from 'node:url';
 import {
   applyCheckboxToggle,
   applyRadioAnswer,
+  buildExportCsv,
   flattenAnswers,
   getSubmitAnswers,
   getVisibleQuestions,
 } from '../packages/core/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v22.json'), 'utf8'));
+const schema = JSON.parse(fs.readFileSync(path.join(root, 'schema', 'v23.json'), 'utf8'));
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
@@ -27,7 +28,6 @@ answers = applyRadioAnswer(schema, answers, '10', 'ip_partner');
 answers = applyRadioAnswer(schema, answers, '11', 'interested');
 visible = getVisibleQuestions(schema, answers).map((q) => q.id);
 assert(visible.includes('11a'), 'interested should show 11a');
-assert(visible.includes('11c'), 'interested should show 11c');
 
 answers = applyRadioAnswer(schema, answers, '11', 'maybe');
 visible = getVisibleQuestions(schema, answers).map((q) => q.id);
@@ -38,11 +38,17 @@ visible = getVisibleQuestions(schema, answers).map((q) => q.id);
 assert(visible.includes('11ha'), 'album branch');
 assert(!visible.includes('11'), 'IP Q11 hidden on album');
 
-// fill minimal required path for submit clean
+answers = applyRadioAnswer(schema, { '12': 'desk_wfh', '13': 'unsure', '15': 'asap' }, '12', 'not_want');
+visible = getVisibleQuestions(schema, answers).map((q) => q.id);
+assert(!visible.includes('13'), 'not_want hides 13');
+assert(!visible.includes('14'), 'not_want hides 14');
+assert(!visible.includes('15'), 'not_want hides 15');
+assert(!answers['13'], 'not_want clears 13 answer');
+
 answers = {
   '1': '18-25',
   '2': 'prefer_not',
-  '3': 'unsure',
+  '3': '3000_6000',
   '4': 'neither',
   '5': 'ai_device',
   '6': 'unclear',
@@ -61,11 +67,26 @@ answers = {
 };
 const cleaned = getSubmitAnswers(schema, answers);
 assert(!cleaned['10'], 'submit should drop Q10 when none_attractive');
-assert(!cleaned['11'], 'submit should drop IP branch when none_attractive');
 assert(cleaned['9'][0] === 'none_attractive', 'keep Q9');
 
 const flat = flattenAnswers(cleaned);
-assert(flat.topFeature == null, 'flat topFeature null');
+assert(flat.digitalBudget === '3000_6000', 'budget tier');
 assert(flat.ipMerchPayCap === null, 'ipMerchPayCap null');
 
-console.log('smoke OK — core visibility / submit / flatten');
+const csv = buildExportCsv(
+  [
+    {
+      id: 't1',
+      version: 'v23',
+      created_at: '2026-07-23T00:00:00.000Z',
+      flat: JSON.stringify(flat),
+    },
+  ],
+  schema,
+  { headers: 'zh' }
+);
+assert(csv.charCodeAt(0) === 0xfeff, 'csv utf8 bom');
+assert(csv.includes('答卷ID'), 'csv zh header');
+assert(csv.includes('月度数码兴趣预算'), 'csv budget zh');
+
+console.log('smoke OK — v23 visibility / submit / flatten / csv');

@@ -8,8 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import {
-  FLAT_EXPORT_COLUMNS,
-  cellValue,
+  buildExportCsv,
   flattenAnswers,
   getSubmitAnswers,
   validateRequired,
@@ -17,7 +16,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../..');
-const SCHEMA_PATH = path.join(ROOT, 'schema', 'v22.json');
+const SCHEMA_PATH = path.join(ROOT, 'schema', 'v23.json');
 const DATA_DIR = path.join(ROOT, 'data');
 const DB_PATH = process.env.SURVEY_DB_PATH || path.join(DATA_DIR, 'survey.sqlite');
 const ADMIN_TOKEN = process.env.SURVEY_ADMIN_TOKEN || 'xolome-dev-export-token';
@@ -50,15 +49,12 @@ const insertStmt = db.prepare(`
 const listStmt = db.prepare(`SELECT * FROM responses ORDER BY created_at DESC`);
 const countStmt = db.prepare('SELECT COUNT(*) AS n FROM responses');
 
-/** Simple in-memory rate limit: max 20 submits / IP hash / 10 min */
 const rateBuckets = new Map();
 function allowSubmit(ipHash) {
   const now = Date.now();
   const windowMs = 10 * 60 * 1000;
-  const max = 20;
-  let bucket = rateBuckets.get(ipHash) || [];
-  bucket = bucket.filter((t) => now - t < windowMs);
-  if (bucket.length >= max) return false;
+  let bucket = (rateBuckets.get(ipHash) || []).filter((t) => now - t < windowMs);
+  if (bucket.length >= 20) return false;
   bucket.push(now);
   rateBuckets.set(ipHash, bucket);
   return true;
@@ -72,35 +68,6 @@ function clientIp(c) {
 
 function hashIp(ip) {
   return createHash('sha256').update(String(ip)).digest('hex').slice(0, 16);
-}
-
-function csvEscape(s) {
-  const str = String(s ?? '');
-  if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
-  return str;
-}
-
-function rowsToCsv(rows, includeContact) {
-  const cols = [
-    'id',
-    'version',
-    'created_at',
-    ...FLAT_EXPORT_COLUMNS.filter((c) =>
-      includeContact ? true : c !== 'contact' && c !== 'displayName'
-    ),
-  ];
-  const lines = [cols.join(',')];
-  for (const row of rows) {
-    const flat = JSON.parse(row.flat);
-    const line = cols.map((col) => {
-      if (col === 'id' || col === 'version' || col === 'created_at') {
-        return csvEscape(row[col]);
-      }
-      return csvEscape(cellValue(flat[col]));
-    });
-    lines.push(line.join(','));
-  }
-  return lines.join('\n');
 }
 
 const app = new Hono();
@@ -170,6 +137,7 @@ app.get('/api/export', (c) => {
   }
   const format = (c.req.query('format') || 'csv').toLowerCase();
   const includeContact = c.req.query('includeContact') === '1';
+  const headers = (c.req.query('headers') || 'zh').toLowerCase() === 'en' ? 'en' : 'zh';
   const rows = listStmt.all();
 
   if (format === 'json') {
@@ -190,7 +158,7 @@ app.get('/api/export', (c) => {
     return c.json({ code: 0, count: payload.length, data: payload });
   }
 
-  const csv = rowsToCsv(rows, includeContact);
+  const csv = buildExportCsv(rows, schema, { includeContact, headers });
   return new Response(csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',

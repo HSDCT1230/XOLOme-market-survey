@@ -1,9 +1,8 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import schema from '../schema/v22.json';
+import schema from '../schema/v23.json';
 import {
-  FLAT_EXPORT_COLUMNS,
-  cellValue,
+  buildExportCsv,
   flattenAnswers,
   getSubmitAnswers,
   validateRequired,
@@ -26,35 +25,6 @@ function clientIp(c) {
     c.req.header('x-forwarded-for')?.split(',')[0]?.trim() ||
     'unknown'
   );
-}
-
-function csvEscape(s) {
-  const str = String(s ?? '');
-  if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
-  return str;
-}
-
-function rowsToCsv(rows, includeContact) {
-  const cols = [
-    'id',
-    'version',
-    'created_at',
-    ...FLAT_EXPORT_COLUMNS.filter((c) =>
-      includeContact ? true : c !== 'contact' && c !== 'displayName'
-    ),
-  ];
-  const lines = [cols.join(',')];
-  for (const row of rows) {
-    const flat = JSON.parse(row.flat);
-    const line = cols.map((col) => {
-      if (col === 'id' || col === 'version' || col === 'created_at') {
-        return csvEscape(row[col]);
-      }
-      return csvEscape(cellValue(flat[col]));
-    });
-    lines.push(line.join(','));
-  }
-  return lines.join('\n');
 }
 
 async function ensureSchema(db) {
@@ -151,6 +121,7 @@ function createApp() {
 
     const format = (c.req.query('format') || 'csv').toLowerCase();
     const includeContact = c.req.query('includeContact') === '1';
+    const headers = (c.req.query('headers') || 'zh').toLowerCase() === 'en' ? 'en' : 'zh';
     const { results: rows } = await db
       .prepare('SELECT * FROM responses ORDER BY created_at DESC')
       .all();
@@ -173,7 +144,7 @@ function createApp() {
       return c.json({ code: 0, count: payload.length, data: payload });
     }
 
-    const csv = rowsToCsv(rows || [], includeContact);
+    const csv = buildExportCsv(rows || [], schema, { includeContact, headers });
     return new Response(csv, {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',

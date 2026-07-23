@@ -58,3 +58,7 @@ npm run dev:web
 ```bash
 npm run cf:deploy
 ```
+
+## 运营 / 零基础分析
+
+见 [`docs/数据分析与后台指南.md`](docs/数据分析与后台指南.md)：如何用 `/admin` 导出 CSV、数据存在哪、怎么做透视与交叉分析。
