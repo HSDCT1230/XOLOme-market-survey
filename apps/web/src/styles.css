@@ -1,5 +1,12 @@
 :root {
-  /* XOLOme brand — charcoal + pure white (from logo) */
+  /* XOLOme brand — dark charcoal + green accent */
+  --xo-green: #6ec73b;
+  --xo-green-light: #8fdf5a;
+  --xo-green-deep: #4fa01f;
+  --xo-orange: #ff8f00;
+  --xo-danger: #ff595f;
+  --xo-ink: #1a1a1a;
+
   --bg: #1a1a1a;
   --bg-elevated: #242424;
   --surface: #2e2e2e;
@@ -8,15 +15,14 @@
   --muted: #a3a3a3;
   --line: color-mix(in srgb, #fff 12%, transparent);
   --line-strong: color-mix(in srgb, #fff 22%, transparent);
-  --accent: #ffffff;
-  --accent-soft: color-mix(in srgb, #fff 10%, transparent);
-  --ok: #c8c8c8;
+  --accent: var(--xo-green);
+  --accent-soft: color-mix(in srgb, var(--xo-green) 18%, transparent);
+  --ok: var(--xo-green);
   --danger: #ff7a7a;
   --radius: 12px;
   --radius-sm: 10px;
   --tap: 48px;
 
-  /* Geometric sans (EN) + modern black (CN) */
   --font-en: "Space Grotesk", "Outfit", sans-serif;
   --font-cn: "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -59,7 +65,7 @@ body {
   font-synthesis: none;
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, #3a3a3a 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 50% -20%, color-mix(in srgb, var(--xo-green) 16%, #2a2a2a) 0%, transparent 55%),
     radial-gradient(ellipse 60% 40% at 100% 100%, #252525 0%, transparent 45%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   background-attachment: fixed;
@@ -149,16 +155,16 @@ body {
 }
 
 .progress-bar {
-  height: 3px;
-  background: var(--surface);
-  border-radius: 2px;
+  height: 6px;
+  background: var(--line);
+  border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--text);
-  border-radius: 2px;
+  background: linear-gradient(90deg, var(--xo-green) 0%, var(--xo-green-light) 100%);
+  border-radius: 999px;
   transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -180,9 +186,9 @@ body {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--xo-green);
   margin-bottom: 8px;
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-bold);
 }
 
 .q-title {
@@ -265,9 +271,9 @@ body {
 }
 
 .option.selected::after {
-  border-color: var(--text);
-  background: var(--text);
-  box-shadow: inset 0 0 0 3px var(--bg);
+  border-color: var(--xo-green);
+  background: var(--xo-green);
+  box-shadow: inset 0 0 0 3px var(--surface);
   transform: translateY(-50%) scale(1);
 }
 
@@ -289,7 +295,8 @@ body {
 
 .textarea:focus {
   outline: none;
-  border-color: var(--line-strong);
+  border-color: var(--xo-green);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .textarea::placeholder {
@@ -308,7 +315,7 @@ body {
     calc(16px + var(--safe-right))
     calc(12px + var(--safe-bottom))
     calc(16px + var(--safe-left));
-  background: linear-gradient(to top, var(--bg) 65%, transparent);
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
   pointer-events: none;
 }
 
@@ -352,9 +359,10 @@ body {
 }
 
 .btn-primary {
-  background: var(--text);
-  color: var(--bg);
+  background: linear-gradient(90deg, var(--xo-green) 0%, var(--xo-green-light) 100%);
+  color: #111;
   font-weight: var(--fw-bold);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--xo-green) 28%, transparent);
 }
 
 .toast {
@@ -363,7 +371,7 @@ body {
   bottom: calc(96px + var(--safe-bottom));
   transform: translateX(-50%);
   max-width: min(90vw, 360px);
-  background: var(--surface);
+  background: var(--surface-2);
   color: var(--text);
   border: 1px solid var(--line);
   padding: 10px 18px;
@@ -392,18 +400,19 @@ body {
   width: 48px;
   height: 48px;
   margin: 28px auto 20px;
-  border: 1.5px solid var(--text);
+  border: 1.5px solid var(--xo-green);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--accent-soft);
   animation: check-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
 .success-check svg {
   width: 22px;
   height: 22px;
-  stroke: var(--text);
+  stroke: var(--xo-green);
   stroke-width: 2;
   fill: none;
   stroke-linecap: round;
@@ -436,10 +445,13 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* ——— Admin (light brand align) ——— */
+/* ——— Admin ——— */
 .admin-panel {
   margin-top: 8px;
-  padding: 4px 0 24px;
+  padding: 16px 16px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   animation: enter-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -448,12 +460,18 @@ body {
   padding: 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
-  background: var(--surface);
+  background: var(--bg-elevated);
   color: var(--text);
   margin: 8px 0 16px;
   font-size: 16px;
   font-family: var(--font-cn);
   -webkit-appearance: none;
+}
+
+.admin-panel input[type="password"]:focus {
+  outline: none;
+  border-color: var(--xo-green);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .admin-panel label {

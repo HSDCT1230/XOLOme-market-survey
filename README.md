@@ -42,7 +42,8 @@
 
 ## 问卷版本约定
 
-当前正式投放为 **v1.0**（`schema/v1.0.json`，入库 `version` 同）。正式大改升到 **v2.0**；此前小改用 **v1.1 / v1.2 / v1.3**…。
+当前正式投放为 **v1.0**（`schema/v1.0.json`，入库 `version` 同）。  
+大改升 **v2.0**；小改用 **v1.1 / v1.2…**。旧稿见 `schema/archive/`。
 
 ## Cloudflare（已部署）
 
@@ -59,6 +60,12 @@ npm run dev:api
 npm run dev:web
 ```
 
+- 问卷：http://127.0.0.1:5173/
+- 管理导出：http://127.0.0.1:5173/admin（默认密钥 `xolome-dev-export-token`，可用环境变量 `SURVEY_ADMIN_TOKEN` 覆盖）
+- API：http://127.0.0.1:8787/api/health
+
+生产也可只跑 API（先 `npm run build`，再 `npm start`），由 Hono 托管 `apps/web/dist`。
+
 ## 再部署
 
 ```bash
@@ -68,3 +75,4 @@ npm run cf:deploy
 ## 运营 / 零基础分析
 
 见 [`docs/数据分析与后台指南.md`](docs/数据分析与后台指南.md)：如何用 `/admin` 导出 CSV、数据存在哪、怎么做透视与交叉分析。
+对拍清单：[`docs/PARITY.md`](docs/PARITY.md)。

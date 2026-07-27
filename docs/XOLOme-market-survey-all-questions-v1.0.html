@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>XOLOme 市场调研问卷 · 全部题目 · v1.0</title>
+<style>
+  :root {
+    --brand:#6ec73b; --brand-deep:#4fa01f; --brand-soft:#eef8e6;
+    --ink:#1f2a18; --muted:#6b6b6b; --line:#d9e5d0; --soft:#f3f8ef; --page:#eef4e9;
+    --ab:var(--brand);
+    --skip:#b42318; --skip-bg:#fff1f0; --skip-bd:#f3b0a8;
+    --mod:var(--brand); --grp:#3f6b28;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body {
+    margin:0; color:var(--ink); background:var(--page);
+    font:15px/1.5 "Segoe UI","PingFang SC","Noto Sans SC",sans-serif;
+    overflow-x:hidden;
+  }
+  .wrap {
+    max-width:min(1600px, 100%);
+    margin:0 auto;
+    padding:32px 28px 96px;
+    padding-left:max(16px, env(safe-area-inset-left));
+    padding-right:max(16px, env(safe-area-inset-right));
+    padding-bottom:max(96px, env(safe-area-inset-bottom));
+  }
+
+  .hero {
+    background:linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
+    color:#fff; border-radius:14px; padding:20px 22px 18px; margin-bottom:18px;
+  }
+  .hero h1 { margin:0; font-size:clamp(18px, 4.5vw, 24px); font-weight:700; word-break:break-word; }
+
+  .toc {
+    display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:22px;
+  }
+  .toc a {
+    text-decoration:none; color:var(--ink); background:#fff; border:1px solid var(--line);
+    border-radius:10px; padding:10px 8px; text-align:center; display:block;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toc a:hover, .toc a:active { border-color:var(--brand); }
+  .toc strong { display:block; font-size:14px; margin-bottom:2px; color:var(--brand-deep); }
+  .toc em { display:block; font-style:normal; font-size:11px; color:var(--muted); }
+  .toc small { display:block; margin-top:4px; font-size:10px; color:#999; }
+
+  .mod {
+    background:#fff; border:1px solid var(--line); border-radius:14px;
+    margin:0 0 18px; overflow:hidden;
+    box-shadow:0 1px 0 rgba(0,0,0,.02);
+  }
+  .mod-h {
+    display:grid; grid-template-columns:64px 1fr auto; gap:12px; align-items:center;
+    padding:14px 16px; background:linear-gradient(90deg, var(--brand-deep), var(--brand)); color:#fff;
+  }
+  .mod-no {
+    width:52px; height:52px; border-radius:12px; background:#fff; color:var(--brand-deep);
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:800; letter-spacing:-.02em; flex-shrink:0;
+  }
+  .mod-meta { min-width:0; }
+  .mod-meta h2 { margin:0; font-size:clamp(16px, 4vw, 18px); font-weight:700; }
+  .mod-meta p { margin:4px 0 0; font-size:13px; color:rgba(255,255,255,.88); }
+  .mod-range {
+    font-size:11px; font-weight:600; letter-spacing:.04em;
+    padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.35); color:#fff;
+    white-space:nowrap;
+  }
+  .mod-b { padding:14px 14px 16px; display:flex; flex-direction:column; gap:12px; }
+
+  .grp {
+    border:1px solid var(--line); border-radius:12px; background:var(--soft); overflow:hidden;
+  }
+  .grp-h {
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    padding:8px 12px; background:var(--brand-soft); border-bottom:1px solid var(--line);
+  }
+  .grp-t { font-size:13px; font-weight:700; color:var(--grp); letter-spacing:.02em; }
+  .grp-n { font-size:12px; color:var(--muted); }
+  .grp-b { padding:10px; display:flex; flex-direction:column; gap:10px; }
+
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .triple { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .stack { display:flex; flex-direction:column; gap:10px; }
+
+  .q {
+    border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; background:#fff; height:100%;
+    min-width:0;
+  }
+  .qh { display:grid; grid-template-columns:52px 1fr; gap:8px; margin-bottom:10px; }
+  .qh b {
+    width:56px; height:30px; display:flex; align-items:center; justify-content:center;
+    border-radius:6px; background:var(--brand); color:#fff; font-size:13px; flex-shrink:0;
+  }
+  .title { font-weight:600; font-size:15px; word-break:break-word; }
+
+  .opts { display:grid; gap:6px; }
+  .opts.cols-1 { grid-template-columns:1fr; }
+  .opts.cols-2 { grid-template-columns:1fr 1fr; }
+  .opts.cols-3 { grid-template-columns:1fr 1fr 1fr; }
+
+  .opt {
+    display:grid; grid-template-columns:22px 1fr; gap:8px; align-items:start;
+    border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:var(--soft);
+    min-width:0;
+  }
+  .ab {
+    width:20px; height:20px; border-radius:50%; background:var(--brand); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;
+  }
+  .lb { font-size:13px; line-height:1.4; padding-top:1px; word-break:break-word; }
+  .fill { font-size:13px; color:var(--muted); padding:4px 0; }
+
+  .skip {
+    display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap; width:100%;
+    padding:12px 14px;
+    border:1px solid var(--skip-bd); border-left:4px solid var(--skip);
+    border-radius:8px; background:var(--skip-bg); color:var(--skip);
+    font-size:13px; line-height:1.45;
+  }
+  .skip-k {
+    flex:0 0 auto; font-size:11px; font-weight:700; letter-spacing:.04em;
+    padding:2px 8px; border-radius:4px; background:var(--skip); color:#fff;
+  }
+  .skip-b { flex:1 1 200px; font-weight:500; min-width:0; word-break:break-word; }
+
+  .branches { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+  .branch-ip, .col {
+    border:1px solid var(--tone-line, var(--line));
+    border-radius:12px;
+    background:var(--tone-bg, #fff);
+    padding:12px;
+    display:flex; flex-direction:column; gap:10px; min-width:0;
+  }
+  .branch-ip > h3, .col > h3 {
+    margin:0; font-size:13px; font-weight:700; color:#fff;
+    padding:8px 10px; border-radius:8px;
+    background:var(--tone, var(--brand));
+    display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;
+  }
+  .branch-ip > h3 small, .col > h3 small {
+    font-weight:500; color:rgba(255,255,255,.88); font-size:11px;
+  }
+  .branch-ip-flow { display:flex; flex-direction:column; gap:10px; }
+  .branch-ip .opts.cols-3 { grid-template-columns:1fr 1fr; }
+  .col .q { padding:12px 14px; }
+  .col .opts.cols-2 { grid-template-columns:1fr 1fr; }
+  .col .opts.cols-3 { grid-template-columns:1fr 1fr; }
+
+  /* 五路分支配色 · 取自 XOLOme 绿/橙/珊瑚/炭黑，A 用蓝区分主分支 */
+  .tone-a { --tone:#2f6fed; --tone-bg:#eef3ff; --tone-line:#b7c9f7; }
+  .tone-b { --tone:#5bb82e; --tone-bg:#f0f9e8; --tone-line:#b7e08f; }
+  .tone-b > h3 { background:linear-gradient(90deg,#8fdf5a,#6ec73b); color:#1f2a18; }
+  .tone-b > h3 small { color:rgba(31,42,24,.7); }
+  .tone-c { --tone:#ff8f00; --tone-bg:#fff6e8; --tone-line:#ffd399; }
+  .tone-d { --tone:#ff595f; --tone-bg:#fff1f2; --tone-line:#ffc2c4; }
+  .tone-e { --tone:#2e2e2e; --tone-bg:#f3f3f3; --tone-line:#cfcfcf; }
+
+  .tone-a .qh b, .tone-a .ab { background:var(--tone); }
+  .tone-b .qh b, .tone-b .ab { background:#6ec73b; }
+  .tone-c .qh b, .tone-c .ab { background:var(--tone); }
+  .tone-d .qh b, .tone-d .ab { background:var(--tone); }
+  .tone-e .qh b, .tone-e .ab { background:var(--tone); }
+
+  /* 平板 */
+  @media (max-width:1024px) {
+    .toc { grid-template-columns:repeat(4,1fr); }
+    .triple { grid-template-columns:1fr 1fr; }
+    .opts.cols-3 { grid-template-columns:1fr 1fr; }
+  }
+
+  /* 手机 */
+  @media (max-width:720px) {
+    .wrap {
+      padding:16px 12px 72px;
+      padding-left:max(12px, env(safe-area-inset-left));
+      padding-right:max(12px, env(safe-area-inset-right));
+    }
+    .hero { border-radius:12px; padding:16px 16px 14px; margin-bottom:12px; }
+    .toc {
+      display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x mandatory; padding-bottom:6px; margin-bottom:14px;
+    }
+    .toc a {
+      flex:0 0 auto; min-width:112px; scroll-snap-align:start; padding:10px 12px;
+    }
+    .toc small { display:none; }
+    .mod { border-radius:12px; margin:0 0 12px; }
+    .mod-h {
+      grid-template-columns:44px 1fr;
+      gap:10px; padding:12px;
+    }
+    .mod-no { width:44px; height:44px; font-size:15px; border-radius:10px; }
+    .mod-range { grid-column:2; justify-self:start; margin-top:2px; }
+    .mod-meta p { font-size:12px; }
+    .mod-b { padding:10px; gap:10px; }
+    .grp-b { padding:8px; gap:8px; }
+    .pair, .triple, .branches { grid-template-columns:1fr; }
+    .opts.cols-2,
+    .opts.cols-3,
+    .branch-ip .opts.cols-3,
+    .col .opts.cols-2,
+    .col .opts.cols-3 { grid-template-columns:1fr; }
+    .qh { grid-template-columns:48px 1fr; }
+    .qh b { width:48px; height:28px; font-size:12px; }
+    .title { font-size:14px; }
+    .opt { padding:10px; }
+    .lb { font-size:14px; }
+    .skip { padding:10px 12px; font-size:12.5px; }
+    .skip-b { flex:1 1 100%; }
+    .branch-ip, .col { padding:10px; }
+  }
+
+  @media (max-width:380px) {
+    .toc a { min-width:100px; }
+    .hero h1 { font-size:17px; }
+  }
+
+  @media print {
+    body { background:#fff; }
+    .wrap { padding:10px; max-width:none; }
+    .mod, .q, .col, .skip { break-inside:avoid; }
+    .toc { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>XOLOme 市场调研问卷 · 全部题目 · v1.0</h1>
+  </div>
+
+  <nav class="toc">
+    <a href="#m1"><strong>01</strong><em>基础画像</em><small>谁在答</small></a><a href="#m2"><strong>02</strong><em>产品认知</em><small>怎么看 X1</small></a><a href="#m3"><strong>03</strong><em>使用场景</em><small>桌前怎么用</small></a><a href="#m4"><strong>04</strong><em>功能吸引</em><small>先被什么打动</small></a><a href="#m5"><strong>05</strong><em>功能深挖</em><small>按首选分支</small></a><a href="#m6"><strong>06</strong><em>摆放与转化</em><small>愿不愿意买</small></a><a href="#m7"><strong>07</strong><em>收尾触达</em><small>渠道与联系</small></a>
+  </nav>
+
+  <section class="mod" id="m1">
+  <header class="mod-h">
+    <div class="mod-no">01</div>
+    <div class="mod-meta">
+      <h2>基础画像</h2>
+      <p>样本分层：年龄 / 性别 / 预算 / 品类经验</p>
+    </div>
+    <div class="mod-range">Q1–Q4</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 潜在用户属性</span>
+    <span class="grp-n">硬分层字段</span>
+  </div>
+  <div class="grp-b"><div class="pair"><article class="q">
+  <div class="qh">
+    <b>Q1</b>
+    <div>
+      <div class="title">你的年龄</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">18 岁以下</span></div><div class="opt"><span class="ab">B</span><span class="lb">18–25 岁</span></div><div class="opt"><span class="ab">C</span><span class="lb">26–35 岁</span></div><div class="opt"><span class="ab">D</span><span class="lb">36–45 岁</span></div><div class="opt"><span class="ab">E</span><span class="lb">46 岁及以上</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q2</b>
+    <div>
+      <div class="title">你的性别</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">男</span></div><div class="opt"><span class="ab">B</span><span class="lb">女</span></div><div class="opt"><span class="ab">C</span><span class="lb">不便透露</span></div></div>
+</article></div></div>
+</div>
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 B · 消费习惯与品类经验</span>
+    <span class="grp-n">支付力与品类熟悉度</span>
+  </div>
+  <div class="grp-b"><div class="pair"><article class="q">
+  <div class="qh">
+    <b>Q3</b>
+    <div>
+      <div class="title">你每月可支配的数码/兴趣消费预算大约是？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">不到 ¥3,000</span></div><div class="opt"><span class="ab">B</span><span class="lb">¥3,000 – 6,000</span></div><div class="opt"><span class="ab">C</span><span class="lb">¥6,000 及以上</span></div><div class="opt"><span class="ab">D</span><span class="lb">暂时不好说</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q4</b>
+    <div>
+      <div class="title">你是否购买过潮玩或桌面智能设备？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">只买过潮玩 / 手办</span></div><div class="opt"><span class="ab">B</span><span class="lb">只买过桌面智能设备</span></div><div class="opt"><span class="ab">C</span><span class="lb">两种都买过</span></div><div class="opt"><span class="ab">D</span><span class="lb">都没买过</span></div></div>
+</article></div></div>
+</div></div>
+</section>
+
+  <section class="mod" id="m2">
+  <header class="mod-h">
+    <div class="mod-no">02</div>
+    <div class="mod-meta">
+      <h2>产品认知</h2>
+      <p>第一印象与品类锚定：用户把 X1 归到哪一类</p>
+    </div>
+    <div class="mod-range">Q5–Q6</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 第一印象</span>
+    <span class="grp-n">选「其他」才出现补充</span>
+  </div>
+  <div class="grp-b"><div class="stack"><article class="q">
+  <div class="qh">
+    <b>Q5</b>
+    <div>
+      <div class="title">第一次看到 XOLOme X1 时，你觉得它更像什么？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">AI 智能设备</span></div><div class="opt"><span class="ab">B</span><span class="lb">全息播放器</span></div><div class="opt"><span class="ab">C</span><span class="lb">IP 潮玩摆件</span></div><div class="opt"><span class="ab">D</span><span class="lb">桌面陪伴伙伴</span></div><div class="opt"><span class="ab">E</span><span class="lb">游戏互动设备</span></div><div class="opt"><span class="ab">F</span><span class="lb">其他 / 说不清</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q5a</b>
+    <div>
+      <div class="title">可以简单描述一下你的感觉吗？</div>
+    </div>
+  </div>
+  <div class="fill">填空（选填）</div>
+</article></div></div>
+</div>
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 B · 竞品参照</span>
+    <span class="grp-n">竞品心智</span>
+  </div>
+  <div class="grp-b"><article class="q">
+  <div class="qh">
+    <b>Q6</b>
+    <div>
+      <div class="title">你更常把这类产品跟什么比较？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">潮玩 / 手办 / 摆件</span></div><div class="opt"><span class="ab">B</span><span class="lb">智能音箱 / 桌面机器人</span></div><div class="opt"><span class="ab">C</span><span class="lb">显示器周边 / 桌搭配件</span></div><div class="opt"><span class="ab">D</span><span class="lb">游戏设备 / 掌机周边</span></div><div class="opt"><span class="ab">E</span><span class="lb">说不清，更像新品类</span></div></div>
+</article></div>
+</div></div>
+</section>
+
+  <section class="mod" id="m3">
+  <header class="mod-h">
+    <div class="mod-no">03</div>
+    <div class="mod-meta">
+      <h2>使用场景</h2>
+      <p>桌前情境：场景构成 × 投入时长</p>
+    </div>
+    <div class="mod-range">Q7–Q8</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 场景与时长</span>
+    <span class="grp-n">后续价位/摆放交叉分析底盘</span>
+  </div>
+  <div class="grp-b"><div class="pair"><article class="q">
+  <div class="qh">
+    <b>Q7</b>
+    <div>
+      <div class="title">你日常的桌面使用场景是？（可多选）</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">工作学习</span></div><div class="opt"><span class="ab">B</span><span class="lb">游戏娱乐</span></div><div class="opt"><span class="ab">C</span><span class="lb">追剧影音</span></div><div class="opt"><span class="ab">D</span><span class="lb">潮玩收藏</span></div><div class="opt"><span class="ab">E</span><span class="lb">创作设计</span></div><div class="opt"><span class="ab">F</span><span class="lb">其他</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q8</b>
+    <div>
+      <div class="title">你平均每天在桌前大约多久？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">不到 2 小时</span></div><div class="opt"><span class="ab">B</span><span class="lb">2–4 小时</span></div><div class="opt"><span class="ab">C</span><span class="lb">4–8 小时</span></div><div class="opt"><span class="ab">D</span><span class="lb">8 小时及以上</span></div></div>
+</article></div></div>
+</div></div>
+</section>
+
+  <section class="mod" id="m4">
+  <header class="mod-h">
+    <div class="mod-no">04</div>
+    <div class="mod-meta">
+      <h2>功能吸引</h2>
+      <p>先筛兴趣，再强制排序「最想先试」</p>
+    </div>
+    <div class="mod-range">Q9–Q10</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 兴趣多选</span>
+    <span class="grp-n">可多选；无兴趣则短路</span>
+  </div>
+  <div class="grp-b"><div class="stack"><article class="q">
+  <div class="qh">
+    <b>Q9</b>
+    <div>
+      <div class="title">当前 XOLOme 哪些功能最吸引你？（可多选）</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">IP 全息伙伴：角色裸眼 3D 桌面陪伴</span></div><div class="opt"><span class="ab">B</span><span class="lb">全息相册：照片/视频生成专属伙伴</span></div><div class="opt"><span class="ab">C</span><span class="lb">游戏陪伴：游戏角色进设备互动</span></div><div class="opt"><span class="ab">D</span><span class="lb">AI 私人伙伴：聊天、提醒、查询</span></div><div class="opt"><span class="ab">E</span><span class="lb">全息娱乐：音乐/视频全息呈现</span></div><div class="opt"><span class="ab">F</span><span class="lb">暂时都不太吸引</span></div></div>
+</article><div class="skip">
+  <span class="skip-k">跳过本组</span>
+  <span class="skip-b">若 Q9＝F. 暂时都不太吸引 → 跳过 本组（Q10 及全部 Q11*）</span>
+</div></div></div>
+</div>
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 B · 兴趣首选</span>
+    <span class="grp-n">决定下一模块进入哪条分支</span>
+  </div>
+  <div class="grp-b"><article class="q">
+  <div class="qh">
+    <b>Q10</b>
+    <div>
+      <div class="title">如果只能先体验一个，你最想先试哪个？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">IP 全息伙伴</span></div><div class="opt"><span class="ab">B</span><span class="lb">全息相册</span></div><div class="opt"><span class="ab">C</span><span class="lb">游戏陪伴</span></div><div class="opt"><span class="ab">D</span><span class="lb">AI 私人伙伴</span></div><div class="opt"><span class="ab">E</span><span class="lb">全息娱乐</span></div><div class="opt"><span class="ab">F</span><span class="lb">都不想先试 / 先整体了解再说</span></div></div>
+</article></div>
+</div></div>
+</section>
+
+  <section class="mod" id="m5">
+  <header class="mod-h">
+    <div class="mod-no">05</div>
+    <div class="mod-meta">
+      <h2>功能深挖</h2>
+      <p>按 Q10 互斥进入；只深挖「最想先试」的那条产品线</p>
+    </div>
+    <div class="mod-range">Q11*</div>
+  </header>
+  <div class="mod-b">
+      <div class="skip">
+  <span class="skip-k">跳过本组</span>
+  <span class="skip-b">若 Q10＝F. 都不想先试 / 先整体了解再说 → 跳过 本组（全部 Q11*）</span>
+</div>
+      <div class="skip">
+  <span class="skip-k">跳过本组</span>
+  <span class="skip-b">若 Q11＝C. 一般，可以再了解 / D. 不太感兴趣 → 跳过 本组（Q11a–Q11d）</span>
+</div>
+      <div class="branch-ip tone-a">
+        <h3>A · IP 伙伴<small>Q11 → Q11a–d · 共 5 题</small></h3>
+        <div class="branch-ip-flow">
+          <article class="q">
+  <div class="qh">
+    <b>Q11</b>
+    <div>
+      <div class="title">如果主机支持换 IP 角色，并持续上新内容，你的兴趣程度是？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">很感兴趣，会持续关注</span></div><div class="opt"><span class="ab">B</span><span class="lb">有兴趣，看具体 IP 和价格</span></div><div class="opt"><span class="ab">C</span><span class="lb">一般，可以再了解</span></div><div class="opt"><span class="ab">D</span><span class="lb">不太感兴趣</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11a</b>
+    <div>
+      <div class="title">换 IP 时你更看重外壳还是数字内容？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">更看重外壳外观 / 收藏感</span></div><div class="opt"><span class="ab">B</span><span class="lb">更看重数字内容（数字人、舞蹈等）</span></div><div class="opt"><span class="ab">C</span><span class="lb">两者都重要</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11b</b>
+    <div>
+      <div class="title">若单独购买外壳或数字内容包，你更能接受的单次花费是？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">不到 ¥100</span></div><div class="opt"><span class="ab">B</span><span class="lb">¥100 – 300</span></div><div class="opt"><span class="ab">C</span><span class="lb">¥300 及以上</span></div><div class="opt"><span class="ab">D</span><span class="lb">更希望和主机打包，不单独买</span></div><div class="opt"><span class="ab">E</span><span class="lb">暂时不好说</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11c</b>
+    <div>
+      <div class="title">你最想要的 IP / 角色是？</div>
+    </div>
+  </div>
+  <div class="fill">填空（必填）</div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11d</b>
+    <div>
+      <div class="title">若推出该 IP 的限定外壳，你是否愿意额外加价？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">愿意，限定外观值得加价</span></div><div class="opt"><span class="ab">B</span><span class="lb">可以加一点，别太高</span></div><div class="opt"><span class="ab">C</span><span class="lb">看具体 IP 与设计再决定</span></div><div class="opt"><span class="ab">D</span><span class="lb">不愿意，标准版就够</span></div><div class="opt"><span class="ab">E</span><span class="lb">更在意数字内容，外壳无所谓</span></div></div>
+</article>
+        </div>
+      </div>
+      <div class="branches">
+        <div class="col tone-b"><h3>B · 全息相册</h3><article class="q">
+  <div class="qh">
+    <b>Q11ha</b>
+    <div>
+      <div class="title">你更想用全息相册做什么？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">把家人/恋人做成桌面伙伴</span></div><div class="opt"><span class="ab">B</span><span class="lb">把自己/宠物做成伙伴</span></div><div class="opt"><span class="ab">C</span><span class="lb">收藏旅行/活动瞬间</span></div><div class="opt"><span class="ab">D</span><span class="lb">还没想好，先看效果</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11hb</b>
+    <div>
+      <div class="title">对「上传照片/视频生成伙伴」，你最在意？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">像不像、好不好看</span></div><div class="opt"><span class="ab">B</span><span class="lb">能不能互动聊天</span></div><div class="opt"><span class="ab">C</span><span class="lb">隐私安不安全</span></div><div class="opt"><span class="ab">D</span><span class="lb">操作简不简单</span></div></div>
+</article></div><div class="col tone-c"><h3>C · 游戏陪伴</h3><article class="q">
+  <div class="qh">
+    <b>Q11gc</b>
+    <div>
+      <div class="title">你更期待和什么游戏场景联动？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">正在玩的 PC/主机游戏</span></div><div class="opt"><span class="ab">B</span><span class="lb">手机游戏</span></div><div class="opt"><span class="ab">C</span><span class="lb">不绑具体游戏，角色能互动就行</span></div><div class="opt"><span class="ab">D</span><span class="lb">还不确定</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11gb</b>
+    <div>
+      <div class="title">游戏陪伴里你最看重？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">角色外观/出场效果</span></div><div class="opt"><span class="ab">B</span><span class="lb">对战或通关时的实时反馈</span></div><div class="opt"><span class="ab">C</span><span class="lb">语音/表情互动</span></div><div class="opt"><span class="ab">D</span><span class="lb">先能稳定连上再说</span></div></div>
+</article></div><div class="col tone-d"><h3>D · AI 伙伴</h3><article class="q">
+  <div class="qh">
+    <b>Q11ai</b>
+    <div>
+      <div class="title">你最希望 AI 伙伴帮你做什么？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">陪聊解闷</span></div><div class="opt"><span class="ab">B</span><span class="lb">日程提醒 / 待办</span></div><div class="opt"><span class="ab">C</span><span class="lb">查资料、答问题</span></div><div class="opt"><span class="ab">D</span><span class="lb">以上都想要一点</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11ab</b>
+    <div>
+      <div class="title">你更能接受它怎样「开口」？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">我问它才说</span></div><div class="opt"><span class="ab">B</span><span class="lb">适度主动提醒</span></div><div class="opt"><span class="ab">C</span><span class="lb">可以更主动陪伴</span></div><div class="opt"><span class="ab">D</span><span class="lb">不确定，看体验</span></div></div>
+</article></div><div class="col tone-e"><h3>E · 全息娱乐</h3><article class="q">
+  <div class="qh">
+    <b>Q11he</b>
+    <div>
+      <div class="title">你最想用全息看什么？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">音乐 / 演唱会感</span></div><div class="opt"><span class="ab">B</span><span class="lb">短视频 / 二创</span></div><div class="opt"><span class="ab">C</span><span class="lb">影视片段</span></div><div class="opt"><span class="ab">D</span><span class="lb">都可以，看内容质量</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q11hb2</b>
+    <div>
+      <div class="title">全息娱乐你更能接受怎样获取内容？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">设备内置/官方更新</span></div><div class="opt"><span class="ab">B</span><span class="lb">自己导入本地文件</span></div><div class="opt"><span class="ab">C</span><span class="lb">订阅或单次付费买内容包</span></div><div class="opt"><span class="ab">D</span><span class="lb">还没想好</span></div></div>
+</article></div>
+      </div></div>
+</section>
+
+  <section class="mod" id="m6">
+  <header class="mod-h">
+    <div class="mod-no">06</div>
+    <div class="mod-meta">
+      <h2>摆放与转化</h2>
+      <p>场景落点 → 价位 / 体验资格 / 时机；拒绝样本短路转化题</p>
+    </div>
+    <div class="mod-range">Q12–Q15</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 摆放落点</span>
+    <span class="grp-n">转化漏斗入口</span>
+  </div>
+  <div class="grp-b"><article class="q">
+  <div class="qh">
+    <b>Q12</b>
+    <div>
+      <div class="title">你觉得XOLOme X1主要放在哪里使用最合适？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">卧室床头 / 床边休闲桌</span></div><div class="opt"><span class="ab">B</span><span class="lb">客厅茶几 / 共享空间</span></div><div class="opt"><span class="ab">C</span><span class="lb">潮玩收藏柜 / 展示位</span></div><div class="opt"><span class="ab">D</span><span class="lb">家里书房的休闲一角（非主力工位）</span></div><div class="opt"><span class="ab">E</span><span class="lb">公司 / 正式办公桌</span></div><div class="opt"><span class="ab">F</span><span class="lb">居家办公 / 学习主桌</span></div><div class="opt"><span class="ab">G</span><span class="lb">电竞 / 游戏主机位</span></div><div class="opt"><span class="ab">H</span><span class="lb">创作设计桌（绘板、剪辑等）</span></div><div class="opt"><span class="ab">I</span><span class="lb">想用，但暂时无法确定</span></div><div class="opt"><span class="ab">J</span><span class="lb">我根本不想用它</span></div></div>
+</article></div>
+</div>
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 B · 转化意向</span>
+    <span class="grp-n">价位 · 定金体验 · 卡点 · 时机</span>
+  </div>
+  <div class="grp-b">
+          <div class="skip">
+  <span class="skip-k">跳过本组</span>
+  <span class="skip-b">若 Q12＝J. 我根本不想用它 → 跳过 本组（Q13–Q15）</span>
+</div>
+          <div class="stack"><article class="q">
+  <div class="qh">
+    <b>Q13</b>
+    <div>
+      <div class="title">按你现在了解到的信息，哪个整机价位会让你更愿意认真考虑？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">不到 ¥3,000</span></div><div class="opt"><span class="ab">B</span><span class="lb">¥3,000 – 5,000</span></div><div class="opt"><span class="ab">C</span><span class="lb">¥5,000 – 8,000</span></div><div class="opt"><span class="ab">D</span><span class="lb">¥8,000 及以上</span></div><div class="opt"><span class="ab">E</span><span class="lb">暂时不好说</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q14</b>
+    <div>
+      <div class="title">目前可用 ¥499 锁定首发体验资格（约 60 天可退，不是整机全款）。你更倾向？</div>
+    </div>
+  </div>
+  <div class="opts cols-2"><div class="opt"><span class="ab">A</span><span class="lb">想先锁定体验资格</span></div><div class="opt"><span class="ab">B</span><span class="lb">有兴趣，想先多了解再决定</span></div><div class="opt"><span class="ab">C</span><span class="lb">等正式上市再说</span></div><div class="opt"><span class="ab">D</span><span class="lb">现阶段不太适合我</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q14a</b>
+    <div>
+      <div class="title">若你还在观望，主要卡在哪里？（可多选）</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">价格还需要再斟酌</span></div><div class="opt"><span class="ab">B</span><span class="lb">内容 / IP 生态不够确定</span></div><div class="opt"><span class="ab">C</span><span class="lb">外观或尺寸不确定是否合适</span></div><div class="opt"><span class="ab">D</span><span class="lb">暂时想不到刚需场景</span></div><div class="opt"><span class="ab">E</span><span class="lb">不确定好不好用，想先看真人评测</span></div><div class="opt"><span class="ab">F</span><span class="lb">品牌 / 售后还不熟，再观望</span></div><div class="opt"><span class="ab">G</span><span class="lb">还在对比其他品类 / 产品</span></div><div class="opt"><span class="ab">H</span><span class="lb">现在时机不对</span></div><div class="opt"><span class="ab">I</span><span class="lb">其他</span></div></div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q14b</b>
+    <div>
+      <div class="title">可以简单说一下「其他」方面的顾虑吗？</div>
+    </div>
+  </div>
+  <div class="fill">填空（选填）</div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q15</b>
+    <div>
+      <div class="title">关于入手时机，你目前更接近？</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">尽快，想第一批体验</span></div><div class="opt"><span class="ab">B</span><span class="lb">1–3 个月内</span></div><div class="opt"><span class="ab">C</span><span class="lb">3–6 个月内</span></div><div class="opt"><span class="ab">D</span><span class="lb">等评价和实测出来再说</span></div><div class="opt"><span class="ab">E</span><span class="lb">观望，还不确定</span></div><div class="opt"><span class="ab">F</span><span class="lb">从不考虑</span></div></div>
+</article></div></div>
+</div></div>
+</section>
+
+  <section class="mod" id="m7">
+  <header class="mod-h">
+    <div class="mod-no">07</div>
+    <div class="mod-meta">
+      <h2>收尾触达</h2>
+      <p>开放建议 · 获客渠道 · 可选联系方式</p>
+    </div>
+    <div class="mod-range">Q16–Q19</div>
+  </header>
+  <div class="mod-b">
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 A · 建议与渠道</span>
+    <span class="grp-n">定性补充 + 投放归因</span>
+  </div>
+  <div class="grp-b"><div class="pair"><article class="q">
+  <div class="qh">
+    <b>Q16</b>
+    <div>
+      <div class="title">其他建议（选填）</div>
+    </div>
+  </div>
+  <div class="fill">填空（选填）</div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q17</b>
+    <div>
+      <div class="title">你是从哪里了解到 XOLOme 的？（可多选）</div>
+    </div>
+  </div>
+  <div class="opts cols-3"><div class="opt"><span class="ab">A</span><span class="lb">展会 / 线下活动</span></div><div class="opt"><span class="ab">B</span><span class="lb">微信（好友 / 群 / 公众号 / 视频号 / 小程序）</span></div><div class="opt"><span class="ab">C</span><span class="lb">抖音</span></div><div class="opt"><span class="ab">D</span><span class="lb">B站</span></div><div class="opt"><span class="ab">E</span><span class="lb">小红书</span></div><div class="opt"><span class="ab">F</span><span class="lb">熟人当面推荐</span></div><div class="opt"><span class="ab">G</span><span class="lb">自己搜索了解到</span></div><div class="opt"><span class="ab">H</span><span class="lb">其他</span></div></div>
+</article></div></div>
+</div>
+      <div class="grp">
+  <div class="grp-h">
+    <span class="grp-t">题组 B · 联系方式</span>
+    <span class="grp-n">选填；导出时可单独勾选</span>
+  </div>
+  <div class="grp-b"><div class="pair"><article class="q">
+  <div class="qh">
+    <b>Q18</b>
+    <div>
+      <div class="title">怎么称呼你（选填）</div>
+    </div>
+  </div>
+  <div class="fill">填空（选填）</div>
+</article><article class="q">
+  <div class="qh">
+    <b>Q19</b>
+    <div>
+      <div class="title">方便联系的方式（选填）</div>
+    </div>
+  </div>
+  <div class="fill">填空（选填）</div>
+</article></div></div>
+</div></div>
+</section>
+</div>
+</body>
+</html>

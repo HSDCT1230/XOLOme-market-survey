@@ -18,6 +18,16 @@ function assert(cond, msg) {
 }
 
 assert(schema.version === 'v1.0', 'schema version is v1.0');
+assert(
+  schema.draftKey === '_xolome_survey_draft_v1.0_h5',
+  'draftKey is _xolome_survey_draft_v1.0_h5',
+);
+assert(!String(schema.subtitle || '').trim(), 'subtitle should be empty');
+assert(
+  !/无登录|无发券|纯问卷|2–4 分钟|2-4 分钟/.test(String(schema.subtitle || '')),
+  'subtitle has no login/coupon/duration disclaimer',
+);
+assert(schema.branchAnswerKeys?.ip_partner?.includes('11a'), 'branchAnswerKeys present');
 
 let answers = {};
 answers = applyCheckboxToggle(schema, answers, '9', 'none_attractive');
@@ -40,7 +50,7 @@ visible = getVisibleQuestions(schema, answers).map((q) => q.id);
 assert(visible.includes('11ha'), 'album branch');
 assert(!visible.includes('11'), 'IP Q11 hidden on album');
 
-answers = applyRadioAnswer(schema, { '12': 'desk_wfh', '13': 'unsure', '15': 'asap' }, '12', 'not_want');
+answers = applyRadioAnswer(schema, { 12: 'desk_wfh', 13: 'unsure', 15: 'asap' }, '12', 'not_want');
 visible = getVisibleQuestions(schema, answers).map((q) => q.id);
 assert(!visible.includes('13'), 'not_want hides 13');
 assert(!visible.includes('14'), 'not_want hides 14');
@@ -48,23 +58,23 @@ assert(!visible.includes('15'), 'not_want hides 15');
 assert(!answers['13'], 'not_want clears 13 answer');
 
 answers = {
-  '1': '18-25',
-  '2': 'prefer_not',
-  '3': '3000_6000',
-  '4': 'neither',
-  '5': 'ai_device',
-  '6': 'unclear',
-  '7': ['work'],
-  '8': '2_4h',
-  '9': ['none_attractive'],
-  '12': 'unsure',
-  '13': 'unsure',
-  '14': 'learn_more',
+  1: '18-25',
+  2: 'prefer_not',
+  3: '3000_6000',
+  4: 'neither',
+  5: 'ai_device',
+  6: 'unclear',
+  7: ['work'],
+  8: '2_4h',
+  9: ['none_attractive'],
+  12: 'unsure',
+  13: 'unsure',
+  14: 'learn_more',
   '14a': ['want_reviews'],
-  '15': 'uncertain',
-  '17': ['wechat'],
-  '10': 'ip_partner',
-  '11': 'interested',
+  15: 'uncertain',
+  17: ['wechat'],
+  10: 'ip_partner',
+  11: 'interested',
   '11a': 'shell',
 };
 const cleaned = getSubmitAnswers(schema, answers);
@@ -85,14 +95,13 @@ const csv = buildExportCsv(
     },
   ],
   schema,
-  { headers: 'zh' }
+  { headers: 'zh' },
 );
 assert(csv.charCodeAt(0) === 0xfeff, 'csv utf8 bom');
 assert(csv.includes('答卷ID'), 'csv zh header');
 assert(csv.includes('Q3 月度数码兴趣预算'), 'csv budget zh with question number');
 assert(csv.includes('Q1 年龄'), 'csv age zh with question number');
 assert(csv.includes('Q11a 换IP更看重') || csv.includes('Q11a '), 'csv branch 11a has question number');
-// Meta columns stay without Q prefix
 assert(csv.split('\n')[0].includes('答卷ID,问卷版本,提交时间'), 'meta headers without Q');
 assert(!csv.includes('已弃用'), 'csv has no deprecated header label');
 assert(!csv.includes('ipMerchPayCap'), 'csv has no ipMerchPayCap column');
