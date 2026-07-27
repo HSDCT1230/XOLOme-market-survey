@@ -4,21 +4,12 @@
 
 仓库：https://github.com/HSDCT1230/XOLOme-market-survey
 
-## 为什么国内打不开 workers.dev？
+## 问卷入口
 
-本机探测：`api.xolome.com`（`120.26.0.177`）可访问，但 `*.workers.dev` / `*.pages.dev` **经常超时**（运营商对 Cloudflare 免费域拦截）。  
-**服务本身是正常的**（海外/代理可打开）；国内投放请用下面「反代」链接。
+- 问卷：https://xolome-market-survey.xueyingwang1230.workers.dev/
+- 管理导出：https://xolome-market-survey.xueyingwang1230.workers.dev/admin
 
-## 国内推荐投放链接（反代）
-
-零基础操作说明与一键脚本：[`deploy/README-china-proxy.md`](deploy/README-china-proxy.md)
-
-在 `api.xolome.com`（`120.26.0.177`）nginx 配好后：
-
-- 问卷：https://api.xolome.com/survey/
-- 导出：https://api.xolome.com/survey/admin
-
-海外直连（备用）：https://xolome-market-survey.xueyingwang1230.workers.dev/
+> 说明：国内部分网络访问 `*.workers.dev` 可能不稳定。国内反代（`api.xolome.com/survey/`）**暂缓**，脚本仍保留在 `deploy/`，需要时再启用。
 
 ## 字体规范
 
@@ -38,7 +29,7 @@
 - 触控热区 ≥ 44px；`touch-action: manipulation`
 - 输入框 16px 防止 iOS 聚焦放大
 - `clamp()` 字号；窄屏（≤360）优化
-- 相对路径 API，支持根路径与 `/survey/` 反代
+- 相对路径 API，支持根路径与 `/survey/` 反代前缀
 
 ## 问卷版本约定
 
@@ -74,5 +65,6 @@ npm run cf:deploy
 
 ## 运营 / 零基础分析
 
-见 [`docs/数据分析与后台指南.md`](docs/数据分析与后台指南.md)：如何用 `/admin` 导出 CSV、数据存在哪、怎么做透视与交叉分析。
-对拍清单：[`docs/PARITY.md`](docs/PARITY.md)。
+见 [`docs/数据分析与后台指南.md`](docs/数据分析与后台指南.md)：如何用 `/admin` 导出 CSV、数据存在哪、怎么做透视与交叉分析。  
+对拍清单：[`docs/PARITY.md`](docs/PARITY.md)。  
+全量题目结构图：[`docs/XOLOme-market-survey-all-questions-v1.0.html`](docs/XOLOme-market-survey-all-questions-v1.0.html)。
